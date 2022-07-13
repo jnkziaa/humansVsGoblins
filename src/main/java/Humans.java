@@ -1,17 +1,11 @@
+import java.util.Random;
+
 public class Humans {
     private int health;
     private int strength;
     private int positioning;
 
     private String Name;
-
-    public String getName() {
-        return Name;
-    }
-
-    public void setName(String name) {
-        Name = name;
-    }
 
     public Humans(int health, int strength, int positioning) {
         this.health = health;
@@ -26,6 +20,13 @@ public class Humans {
 
     public Humans() {
 
+    }
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
     }
 
     public int getHealth() {
@@ -50,5 +51,21 @@ public class Humans {
 
     public void setPositioning(int positioning) {
         this.positioning = positioning;
+    }
+
+    public Goblins attack(Goblins goblin){
+        Random rand = new Random();
+        int randomizedDamage = rand.nextInt(getStrength());
+        goblin.setGoblinHealth(goblin.getGoblinHealth() - randomizedDamage);
+        System.out.println("Human attacked goblin for " + randomizedDamage + " damage");
+        if(goblin.getGoblinHealth() <= 0){
+            goblin.setGoblinHealth(0);
+        }
+        System.out.println("Goblin has " + goblin.getGoblinHealth() + " HP left");
+        return goblin;
+    }
+
+    public void inventory(){ //hash map of player inventory
+
     }
 }

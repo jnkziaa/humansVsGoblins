@@ -1,13 +1,29 @@
 public class Land {
     private String[][] landGrid;
     private Humans human = new Humans(100, 15, 54);
+    private Goblins goblins = new Goblins(20, 10);
     private int humanPosition = human.getPositioning();
+    private int goblinPosition = goblins.getGoblinPosition();
 
 
     public Land(String[][] landGrid) {
 
         this.landGrid = landGrid;
 
+    }
+
+    public int humanHealth(){
+        return human.getHealth();
+    }
+    public int humanStrength(){
+        return human.getStrength();
+    }
+
+    public int goblinHealth(){
+        return goblins.getGoblinHealth();
+    }
+    public int goblinStrength(){
+        return goblins.getGoblinStrength();
     }
 
     public void getLandGrid() {
@@ -23,7 +39,27 @@ public class Land {
         this.landGrid = landGrid;
     }
 
+
+    public void fightInitiated(){
+        System.out.println("Human has found a goblin! Fight will commence");
+        while (true) {
+            human.attack(goblins);
+            if(goblins.getGoblinHealth() <= 0) {
+                System.out.println("Goblin has been killed!");
+                break;
+            }
+            goblins.attack(human);
+            if (human.getHealth() < 0) {
+                System.out.println("Human has been killed! Game will exit");
+                System.exit(0);
+            }
+        }
+    }
     public void currentPlayerPosition(){
+
+        if(humanPosition == goblinPosition){
+            fightInitiated();
+        }
         StringBuilder strBuild = new StringBuilder();
 
         if(humanPosition < 10){
@@ -42,13 +78,37 @@ public class Land {
         setHumanPosition(Integer.parseInt(strBuild.toString()));
     }
 
+    public void currentGoblinPosition(){
+        StringBuilder strBuild = new StringBuilder();
+
+        if(goblinPosition < 10){
+            strBuild.append(goblinPosition);
+            strBuild.insert(0, 0);
+        }
+        else{
+            strBuild.append(goblinPosition);
+        }
+
+        int col = Integer.parseInt(String.valueOf(strBuild.charAt(0)));
+        int row = Integer.parseInt(String.valueOf(strBuild.charAt(1)));
+        System.out.println(col + " " + row);
+        landGrid[col][row] = "GB";
+
+        setGoblinPosition(Integer.parseInt(strBuild.toString()));
+    }
+
     public void setHumanPosition(int humanPosition) {
         this.humanPosition = humanPosition;
     }
+    public void setGoblinPosition(int randomGoblinPosition) {
+        this.goblinPosition = randomGoblinPosition;
+    }
+
 
     public int getHumanPosition() {
         return humanPosition;
     }
+
 
     public void playerMoveEast(){
         StringBuilder strBuild = new StringBuilder();
@@ -100,4 +160,6 @@ public class Land {
             getLandGrid();
         }
     }
+
+
 }

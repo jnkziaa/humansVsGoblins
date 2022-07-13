@@ -11,8 +11,8 @@ public class Main {
         System.out.println("Welcome to Humans vs Goblins!\nWhat is your name?");
         Scanner in = new Scanner(System.in);
         String name = in.nextLine();
-        Humans human = new Humans(100, 15);
-        human.setName(name);
+        Humans humanName = new Humans();
+        humanName.setName(name);
         System.out.print("\nWould you like to Play? Y or N:  ");
         String play;
         while (true) {
@@ -24,7 +24,7 @@ public class Main {
                     System.exit(0);
                 } else if (play.equals("y")) {
                     System.out.println("\nThank you for choosing to play the game!");
-                    playTheGame(human);
+                    playTheGame(humanName);
                 }
                 else{
                     System.out.println("Invalid Input! Please only type y or n");
@@ -48,12 +48,15 @@ public class Main {
         }
         Scanner in = new Scanner(System.in);
         Random rand = new Random();
-        int randomPosition = rand.nextInt(99);
+        int randomHumanPosition = rand.nextInt(99);
+        int randomGoblinPosition = rand.nextInt(99);
         Land land = new Land(defaultGrid);
-        land.setHumanPosition(randomPosition);
+        land.setHumanPosition(randomHumanPosition);
+        land.setGoblinPosition(randomGoblinPosition);
         land.currentPlayerPosition();
+        land.currentGoblinPosition();
         land.getLandGrid();
-        System.out.println("Humans Attributes: \nHealth: " + human.getHealth() + " Attack: " + human.getStrength());
+        System.out.println("Humans Attributes: \nHealth: " + land.humanHealth() + " Attack: " + land.humanStrength());
         System.out.print("Which direction do you want to move "+ human.getName() + "? n,e,w,s : ");
         playerMovementInput(land, human, in);
 
@@ -68,12 +71,15 @@ public class Main {
                 currentGameProgress(land, human);
             } else if (userInput.equals("e")) {
                 land.playerMoveEast();
+                currentGameProgress(land, human);
             }
             else if (userInput.equals("w")) {
                 land.playerMoveWest();
+                currentGameProgress(land, human);
             }
             else if (userInput.equals("s")) {
                 land.playerMoveSouth();
+                currentGameProgress(land, human);
             }
         }
         catch (InputMismatchException e) {
@@ -84,7 +90,7 @@ public class Main {
 
     private static void currentGameProgress(Land land, Humans human) {
         Scanner in = new Scanner(System.in);
-        System.out.println("Humans Attributes: \nHealth: " + human.getHealth() + " Attack: " + human.getStrength());
+        System.out.println("Humans Attributes: \nHealth: " + land.humanHealth() + " Attack: " + land.humanStrength());
         System.out.print("Which direction do you want to move "+ human.getName() + "? n,e,w,s : ");
         playerMovementInput(land, human, in);
     }
